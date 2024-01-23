@@ -1,9 +1,7 @@
 trigger AccountTrigger on Account (after insert) {
     if (Trigger.isAfter) {
         if (Trigger.isInsert) {
-            AccountHandler.createRelatedContact(Trigger.new);
-            // добавить в хэндлер реализацию логики по типу триггера
-            // добавить передачу oldmap newmap new в хэндлер
+            AccountHandler.afterInsert(Trigger.new, Trigger.newMap);
         }
     }
 }
