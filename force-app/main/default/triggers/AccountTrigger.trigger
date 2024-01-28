@@ -1,7 +1,10 @@
 trigger AccountTrigger on Account (after insert) {
+    AccountHandler accountHandler = new AccountHandler(Trigger.new, Trigger.newMap);
+    //  TODO дописать олдмэп в хэндлере Trigger.oldMap конструктор!!!!
+
     if (Trigger.isAfter) {
         if (Trigger.isInsert) {
-            AccountHandler.afterInsert(Trigger.new, Trigger.newMap);
+            accountHandler.afterInsert();
         }
     }
 }

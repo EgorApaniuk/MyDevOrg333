@@ -1,15 +1,22 @@
 public with sharing class AccountHandler {
 
     public static final String CONTACT_LAST_NAME = 'Something ';
+    private List<Account> triggerNewAccounts;
+    private Map<Id, Account> triggerNewAccountsIds;
 
-    public static void afterInsert(List<Account> triggerNewAccounts, Map<Id, Account> triggerNewAccountsIds) {
-        createRelatedContact(triggerNewAccounts, triggerNewAccountsIds);
+    public AccountHandler(List<Account> triggerNewAccounts, Map<Id, Account> triggerNewAccountsIds) {
+        this.triggerNewAccounts = triggerNewAccounts;
+        this.triggerNewAccountsIds = triggerNewAccountsIds;
     }
 
-    private static void createRelatedContact(List<Account> newAccounts, Map<Id, Account> newAccountsIds) {
-        System.debug(newAccountsIds);
+    public void afterInsert() {
+        createRelatedContact();
+    }
+
+    private void createRelatedContact() {
+        System.debug(this.triggerNewAccountsIds);
         List<Contact> newContacts = new List<Contact>();
-        for (Account acc : newAccounts) {
+        for (Account acc : this.triggerNewAccounts) {
             if (acc.Type == Constants.ACCOUNT_TYPE_PROSPECT) {
                 Contact newContact = new Contact();
                 newContact.LastName = CONTACT_LAST_NAME + acc.Name;
