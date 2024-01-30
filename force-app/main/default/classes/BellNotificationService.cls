@@ -9,7 +9,7 @@ public class BellNotificationService {
      * description  Sends Bell Notification
      * @author      Egor Apaniuk
      * @since       30/01/2024
-     *
+     * @param       Notification title, body, Task object and receipient Id
      */
     public static void sendBellNotificationTaskOwnerChange(String title, String body, Task task, Id recipient) {
         CustomNotificationType notificationType = [
