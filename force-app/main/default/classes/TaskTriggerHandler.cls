@@ -3,55 +3,59 @@
  * @since       30/01/2024
  */
 public with sharing class TaskTriggerHandler {
+//TODO переписать по комментам
+    private static final String TASK_OWNER_CHANGE_TITLE = 'Task Owner Change';
+    private static final String TASK_OWNER_CHANGE_BODY = 'You are now the owner of task: ';
     private List<Task> newTasks;
-    private Map<Id, Task> newTasksIdS;
-    private Map<Id, Task> oldTasksIds;
+    private Map<Id, Task> newTasksMap;
+    private Map<Id, Task> oldTasksMap;
 
-    public TaskTriggerHandler(List<Task> newTasks, Map<Id, Task> newTaksksIds, Map<Id, Task> oldTasksIds) {
+    public TaskTriggerHandler(List<Task> newTasks, Map<Id, Task> newTasksMap, Map<Id, Task> oldTasksMap) {
         this.newTasks = newTasks;
-        this.newTasksIdS = newTasksIdS;
-        this.oldTasksIds = oldTasksIds;
+        this.newTasksMap = newTasksMap;
+        this.oldTasksMap = oldTasksMap;
     }
 
     public void afterUpdate () {
         sendBellNotification();
     }
 
- /**
- * description  Sends Bell Notification in 2 scenarios:
- *              1) when the owner reassignes Task by himself - Notification goes to the new owner
- *              2) when the Task is reassigned by someone else - Notification goes to the new and old owner
- * @author      Egor Apaniuk
- * @since       30/01/2024
- */
+    /**
+     * description  Sends Bell Notification in 2 scenarios:
+     *              1) when the owner reassignes Task by himself - Notification goes to the new owner
+     *              2) when the Task is reassigned by someone else - Notification goes to the new and old owner
+     * @author      Egor Apaniuk
+     * @since       30/01/2024
+     */
     private void sendBellNotification() {
 
         for (Task task : newTasks) {
-            Task oldTask = oldTasksIds.get(task.Id);
-
+            Task oldTask = oldTasksMap.get(task.Id);
+            //перепроверить логику
             if (task.OwnerId != oldTask.OwnerId) {
 
                 BellNotificationService.sendBellNotificationTaskOwnerChange(
-                    'Task Owner Change',
-                    'You are now the owner of task: ' + task.Subject,
+                    TASK_OWNER_CHANGE_TITLE,
+                    TASK_OWNER_CHANGE_BODY + task.Subject,
                     task,
                     task.OwnerId
                 );
             } else if (task.OwnerId != UserInfo.getUserId()) {
                 BellNotificationService.sendBellNotificationTaskOwnerChange(
-                    'Task Owner Change',
-                    'You are now the owner of task: ' + task.Subject,
+                    TASK_OWNER_CHANGE_TITLE,
+                    TASK_OWNER_CHANGE_BODY + task.Subject,
                     task,
                     task.OwnerId
                 );
 
                 BellNotificationService.sendBellNotificationTaskOwnerChange(
-                    'Task Owner Change',
+                    TASK_OWNER_CHANGE_TITLE,
                     'Task: ' + task.Subject + ' has been reassigned to a new owner.',
                     task,
                     oldTask.OwnerId
                 );
             }
         }
+        //создать мапку с тасками и рецепиентами
     }
 }

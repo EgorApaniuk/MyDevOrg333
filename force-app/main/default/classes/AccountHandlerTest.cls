@@ -1,5 +1,6 @@
 @IsTest
 public with sharing class AccountHandlerTest {
+//TODO вынести создание аккаунтов в сетап добавить комментарии
 
     @IsTest
     private static void testAfterInsertPositive() {

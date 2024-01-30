@@ -1,5 +1,6 @@
 public with sharing class AccountHandler {
-
+//TODO поменять названия переменных (<list>newRecords,newMap, oldMap)
+//TODO добавить комментарии
     public static final String CONTACT_LAST_NAME = 'Something ';
     private List<Account> triggerNewAccounts;
     private Map<Id, Account> triggerNewAccountsIds;
@@ -14,7 +15,6 @@ public with sharing class AccountHandler {
     }
 
     private void createRelatedContact() {
-        System.debug(this.triggerNewAccountsIds);
         List<Contact> newContacts = new List<Contact>();
         for (Account acc : this.triggerNewAccounts) {
             if (acc.Type == Constants.ACCOUNT_TYPE_PROSPECT) {

@@ -1,20 +1,17 @@
 public with sharing class BatchTaskStatusRefresh implements Database.Batchable<SObject>, Database.Stateful {
     /* Database.AllowsCallouts */
 
-    private Integer transactionCount;
-    private Integer processedTasksCount;
+    // TODO поправить комментарии
+    // TODO поправить нейминг класса
+    private Integer transactionCount = 0;
+    private Integer processedTasksCount = 0;
     private String ownerId;
 
     public BatchTaskStatusRefresh(String ownerId) { // а вот и конструктор
         this.ownerId = ownerId;
-        this.processedTasksCount = 0;
-        this.transactionCount = 0;
     }
 
-    public BatchTaskStatusRefresh() {
-        this.processedTasksCount = 0;
-        this.transactionCount = 0;
-    }
+    public BatchTaskStatusRefresh() {}
 
     public Database.QueryLocator start(Database.BatchableContext BC) {
         String query = 'SELECT Id, Status FROM Task WHERE Status != \'Completed\' AND Status != \'Overdue\' AND ActivityDate < TODAY';

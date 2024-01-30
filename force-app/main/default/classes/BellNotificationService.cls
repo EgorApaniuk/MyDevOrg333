@@ -6,17 +6,20 @@
 public class BellNotificationService {
 
     /**
-     * description  Sends Bell Notification
-     * @author      Egor Apaniuk
-     * @since       30/01/2024
-     * @param       Notification title, body, Task object and receipient Id
+     * description          Sends Bell Notification
+     * @author              Egor Apaniuk
+     * @since               30/01/2024
+     * @param title         String
+     * @param body          String
+     * @param task          Task
+     * @param receipient    Id
      */
-    public static void sendBellNotificationTaskOwnerChange(String title, String body, Task task, Id recipient) {
+    public static void sendBellNotification(String title, String body, Task task, Id recipient) {
         CustomNotificationType notificationType = [
             SELECT Id, DeveloperName
             FROM CustomNotificationType
-            WHERE DeveloperName = 'TaskOwnerChange'
-        ];
+            WHERE DeveloperName = 'TaskOwnerChange' // тоже вынести как константу
+        ]; // сделать общий notification type
 
         Messaging.CustomNotification notification = new Messaging.CustomNotification();
         notification.setTitle(title);
@@ -30,7 +33,7 @@ public class BellNotificationService {
             notification.send(recipients);
         }
         catch (Exception e) {
-            System.debug('Problem sending notification: ' + e.getMessage());
+            System.debug('Problem sending notification: ' + e.getMessage()); // тоже вынести как константу
         }
 
     }
