@@ -1,7 +1,18 @@
+
+/**
+ * description  Test Class for AccountHandler
+ * @author      Egor Apaniuk
+ * @since       30/01/2024
+ */
 @IsTest
 public with sharing class AccountHandlerTest {
 //TODO вынести создание аккаунтов в сетап добавить комментарии
 
+    /**
+     * description  Positive test method for afterInsert scenario
+     * @author      Egor Apaniuk
+     * @since       30/01/2024
+     */
     @IsTest
     private static void testAfterInsertPositive() {
         List<Account> accs = new List<Account>();
