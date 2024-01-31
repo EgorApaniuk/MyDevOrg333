@@ -1,4 +1,4 @@
-public class SchedulerTaskUrlRefresh implements Schedulable {
+public class TaskUrlRefreshScheduler implements Schedulable {
     public void execute(SchedulableContext SC) {
         BatchTaskUrlRefresh batchJob = new BatchTaskUrlRefresh();
         Database.executeBatch(batchJob, 1);
@@ -7,7 +7,7 @@ public class SchedulerTaskUrlRefresh implements Schedulable {
 }
 
 //  Schedule the job to run every Friday at 5 AM
-//  String jobId = System.schedule('TaskUrlRefreshJob', '0 5 * * FRI', new SchedulerTaskUrlRefresh());
+//  String jobId = System.schedule('TaskUrlRefreshJob', '0 5 * * FRI', new TaskUrlRefreshScheduler());
 
 
 
