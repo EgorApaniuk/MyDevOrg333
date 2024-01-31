@@ -21,7 +21,10 @@ public with sharing class TaskStatusRefreshBatch implements Database.Batchable<S
      * @since       30/01/2024
      */
     public Database.QueryLocator start(Database.BatchableContext BC) {
-        String query = 'SELECT Id, Status FROM Task WHERE Status != \'Completed\' AND Status != \'Overdue\' AND ActivityDate < TODAY';
+        String query = 'SELECT Id, Status'
+                    + 'FROM Task WHERE Status != \'Completed\''
+                    + 'AND Status != \'Overdue\'' //TODO добавить коснтанты для статуса таски
+                    + 'AND ActivityDate < TODAY';
 
         if (ownerId != null && ownerId != '') {
             query += ' AND OwnerId = \'' + ownerId + '\'';
@@ -38,7 +41,7 @@ public with sharing class TaskStatusRefreshBatch implements Database.Batchable<S
     public void execute(Database.BatchableContext BC, List<Task> overdueTasks) {
         List<Task> tasksToUpdate = new List<Task>();
         for (Task task : overdueTasks) {
-            task.Status = 'Overdue';
+            task.Status = 'Overdue';// TODO вынести в конст в общий класс
             tasksToUpdate.add(task);
             processedTasksCount++;
         }
@@ -55,14 +58,14 @@ public with sharing class TaskStatusRefreshBatch implements Database.Batchable<S
      */
     public void finish(Database.BatchableContext BC) {
         Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
-        email.setSubject('Batch Job Completed');
-        email.setHtmlBody('The batch job has processed ' + processedTasksCount + '<br> tasks. Transactions: ' + transactionCount);
-        email.setTargetObjectId('005WV000000AmubYAC'); // admin's User Id
+        email.setSubject('Batch Job Completed'); // закинуть текст в константу
+        email.setHtmlBody('The batch job has processed ' + processedTasksCount
+                        + '<br> tasks. Transactions: ' + transactionCount);
+        email.setTargetObjectId('005WV000000AmubYAC'); // admin's User Id //айдишку нужно соклить нельзя хардкодить
         email.setSaveAsActivity(false);
         List<Messaging.SendEmailResult> sendEmailResults = Messaging.sendEmail(new Messaging.SingleEmailMessage[] {email});
         if (!sendEmailResults[0].success) {
-            System.debug(sendEmailResults[0].errors[0].message);
-            System.debug('error occured!');
+            System.debug(Constants.DEBUG_EMAIL_NOTIFICATION + sendEmailResults[0].errors[0].message);
         } else {
             System.debug(sendEmailResults[0].success);
         }

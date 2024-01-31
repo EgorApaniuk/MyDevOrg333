@@ -1,6 +1,6 @@
 @isTest
 private class BatchTaskUrlRefreshTest {
-
+// TODO написать мок
     @isTest
     static void testBatchExecution() {
 

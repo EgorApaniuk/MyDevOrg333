@@ -2,7 +2,8 @@ global without sharing class Constants {
     // Account
     public static final String ACCOUNT_TYPE_PROSPECT = 'Prospect';
 
-    // Exception
-    public static final String EXCEPTION_NOTIFICATION_DEBUG = 'Problem sending notification: ';
+    // Debug messages
+    public static final String DEBUG_BELL_NOTIFICATION = 'Problem sending notification: ';
+    public static final String DEBUG_EMAIL_NOTIFICATION = 'Problem sending email notification: ';
 
 }

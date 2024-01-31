@@ -8,7 +8,7 @@
 public with sharing class AccountHandlerTest {
 
     /**
-     * description  Setup test method. Creates test Accounts.
+     * description  Setup test method.
      * @author      Egor Apaniuk
      * @since       31/01/2024
      */

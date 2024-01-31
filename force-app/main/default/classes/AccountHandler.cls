@@ -4,6 +4,7 @@
  * @since       26/01/2024
  */
 public with sharing class AccountHandler {
+    // TODO привести к общему неймингу все хэндлеры
 
     public static final String CONTACT_LAST_NAME = 'Something ';
     private List<Account> newRecords;
