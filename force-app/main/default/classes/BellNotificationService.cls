@@ -5,6 +5,16 @@
  */
 public class BellNotificationService {
 
+    private static final String STANDARD_NOTIFICATION_TYPE_DEVELOPER_NAME = 'StandardNotificationType';
+
+    private String notificationType;
+
+    BellNotificationService() {}
+
+    BellNotificationService(String notificationType) {
+        this.notificationType = notificationType;
+    }
+
     /**
      * description          Sends Bell Notification
      * @author              Egor Apaniuk
@@ -18,7 +28,7 @@ public class BellNotificationService {
         CustomNotificationType notificationType = [
             SELECT Id, DeveloperName
             FROM CustomNotificationType
-            WHERE DeveloperName = 'TaskOwnerChange' // тоже вынести как константу
+            WHERE DeveloperName =: STANDARD_NOTIFICATION_TYPE_DEVELOPER_NAME
         ]; // сделать общий notification type
 
         Messaging.CustomNotification notification = new Messaging.CustomNotification();
@@ -33,7 +43,7 @@ public class BellNotificationService {
             notification.send(recipients);
         }
         catch (Exception e) {
-            System.debug('Problem sending notification: ' + e.getMessage()); // тоже вынести как константу
+            System.debug(Constants.EXCEPTION_NOTIFICATION_DEBUG + e.getMessage());
         }
 
     }
