@@ -1,6 +1,10 @@
+/**
+ * description  Account trigger, triggers AccountHandler logic
+ * @author      Egor Apaniuk
+ * @since       26/01/2024
+ */
 trigger AccountTrigger on Account (after insert) {
-    AccountHandler accountHandler = new AccountHandler(Trigger.new, Trigger.newMap);
-    //  TODO дописать олдмэп в хэндлере Trigger.oldMap конструктор!!!!
+    AccountHandler accountHandler = new AccountHandler(Trigger.new, Trigger.newMap, Trigger.oldMap);
 
     if (Trigger.isAfter) {
         if (Trigger.isInsert) {
