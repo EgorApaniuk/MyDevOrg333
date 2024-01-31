@@ -2,26 +2,33 @@
 /**
  * description  Test Class for AccountHandler
  * @author      Egor Apaniuk
- * @since       30/01/2024
+ * @since       31/01/2024
  */
 @IsTest
 public with sharing class AccountHandlerTest {
-//TODO вынести создание аккаунтов в сетап добавить комментарии
 
     /**
-     * description  Positive test method for afterInsert scenario
+     * description  Setup test method. Creates test Accounts.
      * @author      Egor Apaniuk
-     * @since       30/01/2024
+     * @since       31/01/2024
      */
-    @IsTest
-    private static void testAfterInsertPositive() {
+    @testSetup
+    static void setupTestData() {
         List<Account> accs = new List<Account>();
         for (Integer i = 0; i < 10; i++) {
             Account testAcc = new Account(Name = 'test' + i, Type = Constants.ACCOUNT_TYPE_PROSPECT);
             accs.add(testAcc);
         }
         insert accs;
+    }
 
+    /**
+     * description  Positive test method for afterInsert scenario
+     * @author      Egor Apaniuk
+     * @since       31/01/2024
+     */
+    @IsTest
+    private static void testAfterInsertPositive() {
         String contactNameForSoql = AccountHandler.CONTACT_LAST_NAME + 'test%';
         List<Contact> contacts = [SELECT Id FROM Contact WHERE LastName LIKE :contactNameForSoql];
 
