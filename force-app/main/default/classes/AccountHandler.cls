@@ -1,3 +1,8 @@
+/**
+ * description  Account Handler Class, used by triggers
+ * @author      Egor Apaniuk
+ * @since       26/01/2024
+ */
 public with sharing class AccountHandler {
 //TODO поменять названия переменных (<list>newRecords,newMap, oldMap)
 //TODO добавить комментарии
@@ -10,10 +15,20 @@ public with sharing class AccountHandler {
         this.triggerNewAccountsIds = triggerNewAccountsIds;
     }
 
+    /**
+     * description  Executes afterInsert trigger scenario
+     * @author      Egor Apaniuk
+     * @since       26/01/2024
+     */
     public void afterInsert() {
         createRelatedContact();
     }
 
+    /**
+     * description  Method creates related Contacts if Account Type = Prospect
+     * @author      Egor Apaniuk
+     * @since       26/01/2024
+     */
     private void createRelatedContact() {
         List<Contact> newContacts = new List<Contact>();
         for (Account acc : this.triggerNewAccounts) {
