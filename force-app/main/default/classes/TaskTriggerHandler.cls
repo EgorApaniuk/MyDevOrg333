@@ -7,11 +7,11 @@ public with sharing class TaskTriggerHandler {
 
     private static final String TASK_OWNER_CHANGE_TITLE = 'Task Owner Change';
     private static final String TASK_OWNER_CHANGE_BODY = 'You are now the owner of task: ';
+
     private List<Task> newTasks;
     private Map<Id, Task> newTasksMap;
     private Map<Id, Task> oldTasksMap;
-
-    BellNotificationService bellNotificationService = new BellNotificationService();
+    private BellNotificationService bellNotificationService = new BellNotificationService();
 
     public TaskTriggerHandler(List<Task> newTasks, Map<Id, Task> newTasksMap, Map<Id, Task> oldTasksMap) {
         this.newTasks = newTasks;
