@@ -1,11 +1,10 @@
-
 /**
- * description  Test Class for AccountHandler
+ * description  Test Class for AccountTriggerHandler
  * @author      Egor Apaniuk
  * @since       31/01/2024
  */
 @IsTest
-public with sharing class AccountHandlerTest {
+public with sharing class AccountTriggerHandlerTest {
 
     /**
      * description  Setup test method.
@@ -29,7 +28,7 @@ public with sharing class AccountHandlerTest {
      */
     @IsTest
     private static void testAfterInsertPositive() {
-        String contactNameForSoql = AccountHandler.CONTACT_LAST_NAME + 'test%';
+        String contactNameForSoql = AccountTriggerHandler.CONTACT_LAST_NAME + 'test%';
         List<Contact> contacts = [SELECT Id FROM Contact WHERE LastName LIKE :contactNameForSoql];
 
         System.assertEquals(10, contacts.size(), '10 contacts should have been created');

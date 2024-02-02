@@ -3,7 +3,7 @@
  * @author      Egor Apaniuk
  * @since       26/01/2024
  */
-public with sharing class AccountHandler {
+public with sharing class AccountTriggerHandler {
     // TODO привести к общему неймингу все хэндлеры
 
     public static final String CONTACT_LAST_NAME = 'Something ';
@@ -11,7 +11,7 @@ public with sharing class AccountHandler {
     private Map<Id, Account> newMap;
     private Map<Id, Account> oldMap;
 
-    public AccountHandler(List<Account> newRecords, Map<Id, Account> newMap, Map<Id, Account> oldMap) {
+    public AccountTriggerHandler(List<Account> newRecords, Map<Id, Account> newMap, Map<Id, Account> oldMap) {
         this.newRecords = newRecords;
         this.newMap = newMap;
         this.oldMap = oldMap;
