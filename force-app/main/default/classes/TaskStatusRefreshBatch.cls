@@ -22,8 +22,8 @@ public with sharing class TaskStatusRefreshBatch implements Database.Batchable<S
      */
     public Database.QueryLocator start(Database.BatchableContext BC) {
         String query = 'SELECT Id, Status'
-                    + 'FROM Task WHERE Status != \'Completed\''
-                    + 'AND Status != \'Overdue\'' //TODO добавить коснтанты для статуса таски
+                    + 'FROM Task WHERE Status != \'' + Constants.TASK_STATUS_COMPLETED + '\''
+                    + 'AND Status != \'' + Constants.TASK_STATUS_OVERDUE + '\''
                     + 'AND ActivityDate < TODAY';
 
         if (ownerId != null && ownerId != '') {
@@ -41,7 +41,7 @@ public with sharing class TaskStatusRefreshBatch implements Database.Batchable<S
     public void execute(Database.BatchableContext BC, List<Task> overdueTasks) {
         List<Task> tasksToUpdate = new List<Task>();
         for (Task task : overdueTasks) {
-            task.Status = 'Overdue';// TODO вынести в конст в общий класс
+            task.Status = Constants.TASK_STATUS_OVERDUE;
             tasksToUpdate.add(task);
             processedTasksCount++;
         }
