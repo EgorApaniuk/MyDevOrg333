@@ -6,7 +6,6 @@ global without sharing class Constants {
     public static final String TASK_STATUS_OVERDUE = 'Overdue';
     public static final String TASK_STATUS_COMPLETED = 'Completed';
 
-
     // Debug messages
     public static final String DEBUG_BELL_NOTIFICATION = 'Problem sending notification: ';
     public static final String DEBUG_EMAIL_NOTIFICATION = 'Problem sending email notification: ';
