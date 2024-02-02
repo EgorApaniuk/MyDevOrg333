@@ -27,7 +27,9 @@ public class BellNotificationService {
      */
     public void sendBellNotification(String title, String body, Id targetRecordId, Set<String> recipientsIds) {
 
-        String notificationType = this.notificationType != null ? this.notificationType : STANDARD_NOTIFICATION_TYPE_DEVELOPER_NAME;
+        String notificationType = this.notificationType != null
+            ? this.notificationType
+            : STANDARD_NOTIFICATION_TYPE_DEVELOPER_NAME;
 
         customNotificationType = [
             SELECT Id, DeveloperName
