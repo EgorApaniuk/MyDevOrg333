@@ -1,10 +1,10 @@
  /**
- * 
+ * description  Trigger handler for Task obj
  * @author      Egor Apaniuk
  * @since       30/01/2024
  */
 public with sharing class TaskTriggerHandler {
-//TODO переписать по комментам
+
     private static final String TASK_OWNER_CHANGE_TITLE = 'Task Owner Change';
     private static final String TASK_OWNER_CHANGE_BODY = 'You are now the owner of task: ';
     private List<Task> newTasks;
@@ -35,18 +35,21 @@ public with sharing class TaskTriggerHandler {
         for (Task newTask : newTasks) {
             Task oldTask = oldTasksMap.get(newTask.Id);
             if (newTask.OwnerId != oldTask.OwnerId) {
+                Set<String> recepients = new Set<String>();
+                recepients.add(newTask.OwnerId);
+
                 bellNotificationService.sendBellNotification(
                     TASK_OWNER_CHANGE_TITLE,
                     TASK_OWNER_CHANGE_BODY + newTask.Subject,
-                    newTask,
-                    newTask.OwnerId
+                    newTask.Id,
+                    recepients
                 );
                 if (newTask.OwnerId != UserInfo.getUserId()) {
                     bellNotificationService.sendBellNotification(
                         TASK_OWNER_CHANGE_TITLE,
                         'Task: ' + newTask.Subject + ' has been reassigned to a new owner.',
-                        newTask,
-                        oldTask.OwnerId
+                        newTask.Id,
+                        recepients
                     );
                 }
             }
