@@ -9,7 +9,7 @@ public with sharing class TaskTriggerHandler {
     private static final String TASK_OWNER_CHANGE_BODY = 'You are now the owner of task: ';
 
     private List<Task> newTasks;
-    private Map<Id, Task> newTasksMap;
+    private Map<Id, Task> newTasksMap; // TODO названия переменных!!!!
     private Map<Id, Task> oldTasksMap;
     private BellNotificationService bellNotificationService = new BellNotificationService();
 

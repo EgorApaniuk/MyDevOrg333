@@ -5,14 +5,29 @@
  */
 public class BellNotificationService {
 // TODO get set ???
-    private final String STANDARD_NOTIFICATION_TYPE_DEVELOPER_NAME = 'StandardNotificationType';
+    private String notificationType = 'StandardNotificationType'; //TODO почитать про принцип DRY - Dont repeat yourself
 
-    private String notificationType; //TODO почитать про принцип DRY - Dont repeat yourself
-    private CustomNotificationType customNotificationType = new CustomNotificationType();
+    private CustomNotificationType customNotificationType {
+        get {
+            if (customNotificationType == null) {
+                customNotificationType = [
+                    SELECT Id, DeveloperName
+                    FROM CustomNotificationType
+                    WHERE DeveloperName =: notificationType
+                ];
+            }
+            return customNotificationType;
+        }
+        set {}
+    }
 
-    public BellNotificationService() {}
+    public BellNotificationService() {
+        System.debug(1);
+    }
 
     public BellNotificationService(String notificationType) {
+        System.debug(2);
+
         this.notificationType = notificationType;
     }
 
@@ -26,16 +41,7 @@ public class BellNotificationService {
      * @param recipientsIds     Set<String>
      */
     public void sendBellNotification(String title, String body, Id targetRecordId, Set<String> recipientsIds) {
-
-        String notificationType = this.notificationType != null
-            ? this.notificationType
-            : STANDARD_NOTIFICATION_TYPE_DEVELOPER_NAME;
-
-        customNotificationType = [
-            SELECT Id, DeveloperName
-            FROM CustomNotificationType
-            WHERE DeveloperName =: notificationType
-        ];
+    // public void sendBellNotification() {
 
         Messaging.CustomNotification notification = new Messaging.CustomNotification();
         notification.setTitle(title);
