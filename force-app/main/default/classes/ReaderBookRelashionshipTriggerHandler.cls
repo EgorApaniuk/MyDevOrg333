@@ -10,6 +10,8 @@ public with sharing class ReaderBookRelashionshipTriggerHandler {
     private Map<Id, Reader_Book_Relationship__c> newMap;
     private Map<Id, Reader_Book_Relationship__c> oldMap;
 
+    ReaderBookDAO rbDAO = new ReaderBookDAO();
+
     /**
      * description  Class constructor
      * @author      Egor Apaniuk
@@ -30,45 +32,46 @@ public with sharing class ReaderBookRelashionshipTriggerHandler {
      */
     public void beforeInsert() {
         // checkDuplicateTalon();
-        checkDuplicateTalonGPT();
+        // checkDuplicateTalonGPT();
+        checkDuplicates();
     }
 
     /**
-     * description  duplicate finder done by chat gpt
-     *              uses unique string readerId+bookId value to identify duplicates
+     * description  beforeUpdate scenario handler
      * @author      Egor Apaniuk
-     * @since       09/02/2024
+     * @since       11/02/2024
      */
-    private void checkDuplicateTalon() {
-        Set<Id> bookIds = new Set<Id>();
-        Set<Id> readerIds = new Set<Id>();
+    public void beforeUpdate() {
+        checkDuplicates();
+    }
 
-        for (Reader_Book_Relationship__c relationship : newRecords) {
-            bookIds.add(relationship.Book__c);
-            readerIds.add(relationship.Reader__c);
+    /**
+     * description  check Reader Book Relationship duplicates by Reader, Book and Active status
+     * @author      Egor Apaniuk
+     * @since       11/02/2024
+     */
+    public void checkDuplicates() {
+        List<Id> readerIds = new List<Id>();
+        List<Id> bookIds = new List<Id>();
+        for (Reader_Book_Relationship__c rb : newRecords) {
+            readerIds.add(rb.Reader__c);
+            bookIds.add(rb.Book__c);
         }
 
-        List<Reader_Book_Relationship__c> existingRelationships = [
-            SELECT Id, Status__c
-            FROM Reader_Book_Relationship__c
-            WHERE Book__c IN :bookIds
-            AND Reader__c IN :readerIds
-        ];
-
-        Set<String> existingRelationshipKeySet = new Set<String>();
-
-        for (Reader_Book_Relationship__c existingRelationship : [
-            SELECT Reader__c, Book__c
-            FROM Reader_Book_Relationship__c
-            WHERE Status__c = 'Active'
-        ]) {
-            existingRelationshipKeySet.add(existingRelationship.Reader__c + '-' + existingRelationship.Book__c);
+        List<Reader_Book_Relationship__c> readerBookPotentialDuplicates = rbDAO.getByReaderBooksIds(readerIds, bookIds);
+        Map<Id, List<Id>> booksByReader = new Map<Id, List<Id>>();
+                for (Reader_Book_Relationship__c rbDup : readerBookPotentialDuplicates) {
+            if (booksByReader.containsKey(rbDup.Reader__c)) {
+                booksByReader.get(rbDup.Reader__c).add(rbDup.Book__c);
+            } else {
+                booksByReader.put(rbDup.Reader__c, new List<Id>{ rbDup.Book__c });
+            }
         }
 
-        for (Reader_Book_Relationship__c newRelationship : newRecords) {
-            String newRelationshipKey = newRelationship.Reader__c + '-' + newRelationship.Book__c;
-            if (existingRelationshipKeySet.contains(newRelationshipKey)) {
-                System.debug('Found duplicate!');
+        for (Reader_Book_Relationship__c rb : newRecords) {
+            if (booksByReader.containsKey(rb.Reader__c) && booksByReader.get(rb.Reader__c).contains(rb.Book__c)) {
+                //перед деплоем добавить кастом лейбл на орг
+                rb.addError(Label.ThereAreDuplicates);
             }
         }
     }

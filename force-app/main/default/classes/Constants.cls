@@ -10,4 +10,6 @@ global without sharing class Constants {
     public static final String DEBUG_BELL_NOTIFICATION = 'Problem sending notification: ';
     public static final String DEBUG_EMAIL_NOTIFICATION = 'Problem sending email notification: ';
 
+    // Reader Book Relationship
+    public static final String READER_BOOK_REL_STATUS_ACTIVE = 'Active';
 }
