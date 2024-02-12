@@ -3,12 +3,15 @@
  * @author      Egor Apaniuk
  * @since       07/02/2024
  */
-trigger ReaderBookRelashionShipTrigger on Reader_Book_Relationship__c (before insert) {
+trigger ReaderBookRelashionShipTrigger on Reader_Book_Relationship__c (before insert, before update) {
     ReaderBookRelashionShipTriggerHandler readerBookRelashionShipTriggerHandler = new ReaderBookRelashionShipTriggerHandler(Trigger.new, Trigger.newMap, Trigger.oldMap);
 
     if (Trigger.isBefore) {
         if (Trigger.isInsert) {
             ReaderBookRelashionshipTriggerHandler.beforeInsert();
+        }
+        if (Trigger.isUpdate) {
+            ReaderBookRelashionshipTriggerHandler.beforeUpdate();
         }
     }
 }
