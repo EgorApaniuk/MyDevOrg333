@@ -4,7 +4,7 @@
  * @since       30/01/2024
  */
 public class BellNotificationService {
-// TODO get set ???
+
     private String notificationType = 'StandardNotificationType'; //TODO почитать про принцип DRY - Dont repeat yourself
 
     private CustomNotificationType customNotificationType {
