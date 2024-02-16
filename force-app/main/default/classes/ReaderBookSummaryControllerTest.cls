@@ -18,9 +18,9 @@ private class ReaderBookSummaryControllerTest {
         insert testBooks;
 
         List<Reader_Book_Relationship__c> testRelationships = new List<Reader_Book_Relationship__c>{
-            new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[0].Id, Status__c = 'Active'),
-            new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[1].Id, Status__c = 'Active'), // TODO CONST
-            new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[2].Id, Status__c = 'Completed') //TODO Add new const!
+            new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[0].Id, Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE),
+            new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[1].Id, Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE),
+            new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[2].Id, Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_COMPLETED)
         };
         insert testRelationships;
 

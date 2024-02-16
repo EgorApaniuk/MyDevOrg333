@@ -8,6 +8,7 @@ global without sharing class Constants {
 
     // Reader_Book_Relationship__c
     public static final String READER_BOOK_RELATIONSHIP_STATUS_ACTIVE = 'Active';
+    public static final String READER_BOOK_RELATIONSHIP_STATUS_COMPLETED = 'Completed';
 
     // Debug messages
     public static final String DEBUG_BELL_NOTIFICATION = 'Problem sending notification: ';
