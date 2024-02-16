@@ -8,15 +8,15 @@ public with sharing class TaskTriggerHandler {
     private static final String TASK_OWNER_CHANGE_TITLE = 'Task Owner Change';
     private static final String TASK_OWNER_CHANGE_BODY = 'You are now the owner of task: ';
 
-    private List<Task> newTasks;
-    private Map<Id, Task> newTasksMap; // TODO названия переменных!!!!
-    private Map<Id, Task> oldTasksMap;
+    private List<Task> newRecords;
+    private Map<Id, Task> newMap;
+    private Map<Id, Task> oldMap;
     private BellNotificationService bellNotificationService = new BellNotificationService();
 
-    public TaskTriggerHandler(List<Task> newTasks, Map<Id, Task> newTasksMap, Map<Id, Task> oldTasksMap) {
-        this.newTasks = newTasks;
-        this.newTasksMap = newTasksMap;
-        this.oldTasksMap = oldTasksMap;
+    public TaskTriggerHandler(List<Task> newRecords, Map<Id, Task> newMap, Map<Id, Task> oldMap) {
+        this.newRecords = newRecords;
+        this.newMap = newMap;
+        this.oldMap = oldMap;
     }
 
     public void afterUpdate () {
@@ -32,8 +32,8 @@ public with sharing class TaskTriggerHandler {
      */
     private void sendBellNotification() {
 
-        for (Task newTask : newTasks) {
-            Task oldTask = oldTasksMap.get(newTask.Id);
+        for (Task newTask : newRecords) {
+            Task oldTask = oldMap.get(newTask.Id);
             if (newTask.OwnerId != oldTask.OwnerId) {
                 Set<String> recepients = new Set<String>();
                 recepients.add(newTask.OwnerId);
