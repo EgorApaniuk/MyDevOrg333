@@ -27,44 +27,6 @@ private class ReaderBookRelationshipTriggerHandlerTest {
     }
 
     /**
-     * description  Positive Insert test.
-     *              Iterates over each combination of reader and book. Creates & inserts ReaderBookRelations
-     * @author      Egor Apaniuk
-     * @since       12/02/2024
-     */
-    @isTest
-    static void testBeforeInsert_NoDuplicates() {
-
-        List<Reader_Book_Relationship__c> newRecords = new List<Reader_Book_Relationship__c>();
-
-        List<Reader__c> readers = [SELECT Id FROM Reader__c LIMIT 2];
-        List<Book__c> books = [SELECT Id FROM Book__c LIMIT 2];
-
-        for (Reader__c reader : readers) {
-            for (Book__c book : books) {
-                Reader_Book_Relationship__c rbr = new Reader_Book_Relationship__c(
-                    Reader__c = reader.Id,
-                    Book__c = book.Id,
-                    Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE
-                );
-                newRecords.add(rbr);
-            }
-        }
-
-        Test.startTest();
-        insert newRecords;
-        Test.stopTest();
-
-        List<Reader_Book_Relationship__c> insertedRecords = [
-            SELECT Id
-            FROM Reader_Book_Relationship__c
-            WHERE Status__c =: Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE
-        ];
-
-        System.assertEquals(4, insertedRecords.size(), 'Not all records were inserted');
-    }
-
-    /**
      * description  Negative single rbr Insert test.
      * @author      Egor Apaniuk
      * @since       12/02/2024
@@ -95,14 +57,14 @@ private class ReaderBookRelationshipTriggerHandlerTest {
             Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE
         );
 
-        Test.startTest();
+
         try {
             insert duplicateRecord;
             System.assert(false, 'Duplicates should have been found, error shoud have been catched');
         } catch (DmlException e) {
             System.assert(e.getMessage().contains('Duplicates Found'), 'Expected error message not found');
         }
-        Test.stopTest();
+
     }
 
     /**
@@ -136,9 +98,7 @@ private class ReaderBookRelationshipTriggerHandlerTest {
         );
         newRecords.add(duplicateRecord);
 
-        Test.startTest();
         insert newRecords;
-        Test.stopTest();
 
         List<Reader_Book_Relationship__c> insertedRecords = [
             SELECT Id

@@ -46,11 +46,18 @@ public with sharing class ReaderBookRelationshipTriggerHandler {
      * @since       09/02/2024
      */
     private void checkDuplicateReaderBookRelationships() {
+
+        // TODO /////////////////////////////////////////////
+        Set<Reader_Book_Relationship__c> newRecordsSet = newRecords;
+
         List<Id> readerIds = new List<Id>();
         List<Id> bookIds = new List<Id>();
+
         for(Reader_Book_Relationship__c rbr : newRecords) {
-            readerIds.add(rbr.Reader__c);
-            bookIds.add(rbr.Book__c);
+            if (rbr.Status__c == Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE) {
+                readerIds.add(rbr.Reader__c);
+                bookIds.add(rbr.Book__c);
+            }
         }
 
         List<Reader_Book_Relationship__c> potentialDuplicates = ReaderBookRelationshipDAO.getByReaderBooksIds(readerIds, bookIds);
