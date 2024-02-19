@@ -22,16 +22,25 @@ public with sharing class ReaderBookRelationshipDAO {
         ];
     }
 
-    public static Integer getActiveBooksNumberByReaderId(Id readerId) {
+    public static List<Reader_Book_Relationship__c> getActiveRBRsByReaderId(Id readerId) {
+        return [
+            SELECT Id, Status__c
+            FROM Reader_Book_Relationship__c
+            WHERE Reader__c = :readerId
+            AND Status__c = :Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE
+        ];
+    }
+
+    public static Integer getActiveRBRsNumberByReaderId(Id readerId) {
         return [
             SELECT COUNT()
             FROM Reader_Book_Relationship__c
             WHERE Reader__c = :readerId
-            AND Status__c =: Constants.READER_BOOK_RELATIONSHIP_STATUS_COMPLETED
+            AND Status__c =: Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE
         ];
     }
 
-    public static Integer getAllBooksNumberByReaderId(Id readerId) {
+    public static Integer getAllRBRsNumberByReaderId(Id readerId) {
         return [
             SELECT COUNT()
             FROM Reader_Book_Relationship__c
