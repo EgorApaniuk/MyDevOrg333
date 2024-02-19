@@ -16,16 +16,32 @@ public with sharing class ReaderBookSummaryController {
     public static ReaderSummary getReaderSummary(Id readerId) {
         ReaderSummary summary = new ReaderSummary();
 
-        summary.currentlyReadingCount = ReaderBookRelationshipDAO.getActiveBooksNumberByReaderId(readerId);
-        summary.totalReadCount = ReaderBookRelationshipDAO.getAllBooksNumberByReaderId(readerId);
+        summary.activeRBRCount = ReaderBookRelationshipDAO.getActiveRBRsNumberByReaderId(readerId);
+        summary.totalRBRCount = ReaderBookRelationshipDAO.getAllRBRsNumberByReaderId(readerId);
 
         return summary;
     }
 
+    @AuraEnabled
+    public static void handleCloseActiveBRBs(Id readerId) {
+        System.debug('handleCloseActiveBRBs STARTED');
+        List<Reader_Book_Relationship__c> activeRBRs = ReaderBookRelationshipDAO.getActiveRBRsByReaderId(readerId);
+        for (Reader_Book_Relationship__c brb : activeRBRs) {
+            brb.Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_COMPLETE;
+        }
+        try {
+            update activeRBRs;
+        } catch (Exception e) {
+            System.debug('exception throwed: ' + e);
+        }
+        System.debug('handleCloseActiveBRBs RAN');
+    }
+
+
     @TestVisible private class ReaderSummary {  //? вопрос - можно ли использовать тествизибл?
         @AuraEnabled
-        public Integer currentlyReadingCount { get; set; }
+        public Integer activeRBRCount { get; set; }
         @AuraEnabled
-        public Integer totalReadCount { get; set; }
+        public Integer totalRBRCount { get; set; }
     }
 }

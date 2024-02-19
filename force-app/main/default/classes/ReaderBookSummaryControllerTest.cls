@@ -20,13 +20,13 @@ private class ReaderBookSummaryControllerTest {
         List<Reader_Book_Relationship__c> testRelationships = new List<Reader_Book_Relationship__c>{
             new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[0].Id, Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE),
             new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[1].Id, Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE),
-            new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[2].Id, Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_COMPLETED)
+            new Reader_Book_Relationship__c(Reader__c = testReader.Id, Book__c = testBooks[2].Id, Status__c = Constants.READER_BOOK_RELATIONSHIP_STATUS_COMPLETE)
         };
         insert testRelationships;
 
         ReaderBookSummaryController.ReaderSummary result = ReaderBookSummaryController.getReaderSummary(testReader.Id);
 
-        System.assertEquals(2, result.currentlyReadingCount, 'Incorrect currently reading count');
-        System.assertEquals(3, result.totalReadCount, 'Incorrect total read count');
+        System.assertEquals(2, result.activeRBRCount, 'Incorrect currently reading count');
+        System.assertEquals(3, result.totalRBRCount, 'Incorrect total read count');
     }
 }
