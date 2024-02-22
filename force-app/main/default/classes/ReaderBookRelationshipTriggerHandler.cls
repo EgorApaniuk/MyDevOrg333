@@ -29,6 +29,7 @@ public with sharing class ReaderBookRelationshipTriggerHandler {
      */
     public void beforeInsert() {
         checkDuplicateReaderBookRelationships();
+        publishPlatformEvent();
     }
 
     /**
@@ -38,6 +39,16 @@ public with sharing class ReaderBookRelationshipTriggerHandler {
      */
     public void beforeUpdate() {
         checkDuplicateReaderBookRelationships();
+        publishPlatformEvent();
+    }
+
+    /**
+     * description  beforeDelete scenario handler
+     * @author      Egor Apaniuk
+     * @since       22/02/2024
+     */
+    public void beforeDelete() {
+        publishPlatformEvent();
     }
 
     /**
@@ -46,21 +57,21 @@ public with sharing class ReaderBookRelationshipTriggerHandler {
      * @since       09/02/2024
      */
     private void checkDuplicateReaderBookRelationships() {
-        Set<Reader_Book_Relationship__c> uniqueRecords = new Set<Reader_Book_Relationship__c>();
+        // Set<Reader_Book_Relationship__c> uniqueRecords = new Set<Reader_Book_Relationship__c>();
         List<Id> readerIds = new List<Id>();
         List<Id> bookIds = new List<Id>();
 
         System.debug('newRecords.size() ' + newRecords.size());
         for(Reader_Book_Relationship__c rbr : newRecords) {
             if (rbr.Status__c == Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE) {
-                uniqueRecords.add(rbr);
+                // uniqueRecords.add(rbr);
                 readerIds.add(rbr.Reader__c);
                 bookIds.add(rbr.Book__c);
             }
         }
 
-        System.debug('uniqueRecords.size() ' + uniqueRecords.size());
-        System.debug('uniqueRecords ' + uniqueRecords);
+        // System.debug('uniqueRecords.size() ' + uniqueRecords.size());
+        // System.debug('uniqueRecords ' + uniqueRecords);
 
 
         List<Reader_Book_Relationship__c> potentialDuplicates = ReaderBookRelationshipDAO.getByReaderBooksIds(readerIds, bookIds);
@@ -74,10 +85,17 @@ public with sharing class ReaderBookRelationshipTriggerHandler {
             }
         }
 
-        for(Reader_Book_Relationship__c rbr : uniqueRecords) {
+        for(Reader_Book_Relationship__c rbr : newRecords) {
             if (booksByReader.containsKey(rbr.Reader__c) && booksByReader.get(rbr.Reader__c).contains(rbr.Book__c)) {
                 rbr.addError(Label.DuplicatesFound);
             }
         }
+    }
+
+    //? QUESTION: для публикации платформ ивентов принято писать сервис классы?
+    private void publishPlatformEvent() {
+        ReadEvent__e readEvent = new ReadEvent__e();
+
+        EventBus.publish(readEvent);
     }
 }
