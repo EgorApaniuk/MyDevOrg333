@@ -4,14 +4,14 @@ import { refreshApex } from '@salesforce/apex';
 import { subscribe, unsubscribe } from 'lightning/empApi';
 
 import getReaderSummary from '@salesforce/apex/ReaderBookSummaryController.getReaderSummary';
-import handleCloseActiveBRBs from '@salesforce/apex/ReaderBookSummaryController.handleCloseActiveBRBs';
+import handleCompleteActiveBRBs from '@salesforce/apex/ReaderBookSummaryController.handleCompleteActiveBRBs';
 //? QUESTION: каким должен быть порядок импортов в ЛВЦ?	| Вроде такой форматинг правильный.
 
-const ALL_TALONS_CLOSED_MESSAGE = 'All Talons were Closed!';
+const ALL_TALONS_COMPLETED_MESSAGE = 'All Talons were Completed!';
 
 /**
  * description      This component 1) shows summary: number of All and Active Reader's RBRs
- *                  2) "Completes" all Reader's RBRs with Status__c = 'Active' on handleCloseActiveBRBs
+ *                  2) "Completes" all Reader's RBRs with Status__c = 'Active' on handleCompleteActiveBRBs
  * @author          Egor Apaniuk
  * @since           22/02/2024
  */
@@ -20,7 +20,7 @@ export default class ReaderSummary extends LightningElement {
 
     data;
     isDataLoaded = false;
-    isButtonDisabled = false;
+    isCompleteButtonDisabled = false;
     wiredReaderSummaryResult;
     channelName = '/event/ReadEvent__e';
     subscription = {};
@@ -58,8 +58,7 @@ export default class ReaderSummary extends LightningElement {
         if (data) {
             this.isDataLoaded= true;
             this.data = data;
-
-            this.isButtonDisabled = (data.activeRBRCount > 0) ? false : true;
+            this.calculateIsCompleteButtonDisabledFlag(data.activeRBRCount);
         }
     }
 
@@ -68,15 +67,24 @@ export default class ReaderSummary extends LightningElement {
      * @author          Egor Apaniuk
      * @since           22/02/2024
      */
-    handleCloseActiveBRBs() {
-        handleCloseActiveBRBs({ readerId: this.recordId })
+    handleCompleteActiveBRBs() {
+        handleCompleteActiveBRBs({ readerId: this.recordId })
             .then(() => {
-                this.showToast('Success', ALL_TALONS_CLOSED_MESSAGE, 'success');
+                this.showToast('Success', ALL_TALONS_COMPLETED_MESSAGE, 'success');
                 return refreshApex(this.wiredReaderSummaryResult);
             })
             .catch(error => {
                 this.showToast('Error', 'Error closing active talons: ' + error?.body?.message, 'error');
             });
+    }
+
+    /**
+     * description      Checks activeRBRCount to set the proper condition for the 'Complete Active Talons' button
+     * @author          Egor Apaniuk
+     * @since           22/02/2024
+     */
+    calculateIsCompleteButtonDisabledFlag(activeRBRCount) {
+        this.isCompleteButtonDisabled = activeRBRCount > 0 ? false : true;
     }
 
     /**

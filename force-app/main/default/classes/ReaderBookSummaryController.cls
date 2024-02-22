@@ -25,13 +25,13 @@ public with sharing class ReaderBookSummaryController {
     }
 
     /**
-     * description          handles "Close Active Talons" button for one Reader
+     * description          handles "Complete Active Talons" button for one Reader
      * @author              Egor Apaniuk
      * @since               21/02/2024
      * @param   readerId    Id
      */
     @AuraEnabled
-    public static void handleCloseActiveBRBs(Id readerId) { //? QUESTION: how to handle empty/null readerId input better?
+    public static void handleCompleteActiveBRBs(Id readerId) { //? QUESTION: how to handle empty/null readerId input better?
         List<Id> readerIds = new List<Id>{readerId};
 
         List<Reader_Book_Relationship__c> activeRBRs = ReaderBookRelationshipDAO.getActiveByReaderId(readerIds);
