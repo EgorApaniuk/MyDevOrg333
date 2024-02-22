@@ -3,7 +3,7 @@
  * @author      Egor Apaniuk
  * @since       07/02/2024
  */
-trigger ReaderBookRelationshipTrigger on Reader_Book_Relationship__c (before insert, before update) {
+trigger ReaderBookRelationshipTrigger on Reader_Book_Relationship__c (before insert, before update, before delete) {
     ReaderBookRelationshipTriggerHandler readerBookRelationshipTriggerHandler = new ReaderBookRelationshipTriggerHandler(Trigger.new, Trigger.newMap, Trigger.oldMap);
 
     if (Trigger.isBefore) {
@@ -12,6 +12,9 @@ trigger ReaderBookRelationshipTrigger on Reader_Book_Relationship__c (before ins
         }
         if (Trigger.isUpdate) {
             readerBookRelationshipTriggerHandler.beforeUpdate();
+        }
+        if (Trigger.isDelete) {
+            readerBookRelationshipTriggerHandler.beforeDelete();
         }
     }
 }
