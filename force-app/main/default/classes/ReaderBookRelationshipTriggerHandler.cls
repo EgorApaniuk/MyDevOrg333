@@ -57,6 +57,7 @@ public with sharing class ReaderBookRelationshipTriggerHandler {
      * @since       09/02/2024
      */
     private void checkDuplicateReaderBookRelationships() {
+        //TODO Сделать нормально!
         // Set<Reader_Book_Relationship__c> uniqueRecords = new Set<Reader_Book_Relationship__c>();
         List<Id> readerIds = new List<Id>();
         List<Id> bookIds = new List<Id>();
