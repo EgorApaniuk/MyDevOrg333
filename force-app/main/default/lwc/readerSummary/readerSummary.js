@@ -7,7 +7,8 @@ import getReaderSummary from '@salesforce/apex/ReaderBookSummaryController.getRe
 import handleCompleteActiveBRBs from '@salesforce/apex/ReaderBookSummaryController.handleCompleteActiveBRBs';
 //? QUESTION: каким должен быть порядок импортов в ЛВЦ?	| Вроде такой форматинг правильный.
 
-const ALL_TALONS_COMPLETED_MESSAGE = 'All Talons were Completed!';
+const ALL_RBRS_COMPLETED_MESSAGE = 'All Talons were Completed! ';
+const ERROR_WHILE_COMPLETING_RBRS_MESSAGE = 'Error closing active talons: ';
 
 /**
  * description      This component 1) shows summary: number of All and Active Reader's RBRs
@@ -70,11 +71,11 @@ export default class ReaderSummary extends LightningElement {
     handleCompleteActiveBRBs() {
         handleCompleteActiveBRBs({ readerId: this.recordId })
             .then(() => {
-                this.showToast('Success', ALL_TALONS_COMPLETED_MESSAGE, 'success');
+                this.showToast('Success', ALL_RBRS_COMPLETED_MESSAGE, 'success');
                 return refreshApex(this.wiredReaderSummaryResult);
             })
             .catch(error => {
-                this.showToast('Error', 'Error closing active talons: ' + error?.body?.message, 'error');
+                this.showToast('Error', ERROR_WHILE_COMPLETING_RBRS_MESSAGE + error?.body?.message, 'error');
             });
     }
 
