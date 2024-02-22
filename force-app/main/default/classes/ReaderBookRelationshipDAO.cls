@@ -22,29 +22,47 @@ public with sharing class ReaderBookRelationshipDAO {
         ];
     }
 
-    public static List<Reader_Book_Relationship__c> getActiveRBRsByReaderId(Id readerId) {
+    /**
+     * description      SOQLs Active RBRs by Readers
+     * @param readerIds List<Id>
+     * @author          Egor Apaniuk
+     * @since           22/02/2024
+     */
+    public static List<Reader_Book_Relationship__c> getActiveByReaderId(List<Id> readerIds) {
         return [
             SELECT Id, Status__c
             FROM Reader_Book_Relationship__c
-            WHERE Reader__c = :readerId
+            WHERE Reader__c IN :readerIds
             AND Status__c = :Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE
         ];
     }
 
-    public static Integer getActiveRBRsNumberByReaderId(Id readerId) {
+    /**
+     * description      gets number of Active RBRs by Reader(s)
+     * @param readerIds List<Id>
+     * @author          Egor Apaniuk
+     * @since           22/02/2024
+     */
+    public static Integer getActiveNumberByReaderId(List<Id> readerIds) {
         return [
             SELECT COUNT()
             FROM Reader_Book_Relationship__c
-            WHERE Reader__c = :readerId
+            WHERE Reader__c IN :readerIds
             AND Status__c =: Constants.READER_BOOK_RELATIONSHIP_STATUS_ACTIVE
         ];
     }
 
-    public static Integer getAllRBRsNumberByReaderId(Id readerId) {
+    /**
+     * description      gets number of All RBRs by Reader(s)
+     * @param readerIds List<Id>
+     * @author          Egor Apaniuk
+     * @since           22/02/2024
+     */
+    public static Integer getNumberByReaderId(List<Id> readerIds) {
         return [
             SELECT COUNT()
             FROM Reader_Book_Relationship__c
-            WHERE Reader__c = :readerId
+            WHERE Reader__c IN :readerIds
         ];
     }
 }
