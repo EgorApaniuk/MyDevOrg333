@@ -14,7 +14,4 @@ global without sharing class Constants {
     public static final String DEBUG_BELL_NOTIFICATION = 'Problem sending notification: ';
     public static final String DEBUG_EMAIL_NOTIFICATION = 'Problem sending email notification: ';
 
-    // Toast messages
-    public static final String ACTIVE_BRB_UPDATED_TO_COMPLETE = 'Active talons completed successfully.';
-
 }
