@@ -23,14 +23,25 @@ export default class ReaderSummary extends LightningElement {
     isButtonDisabled = false;
     wiredReaderSummaryResult;
     channelName = '/event/ReadEvent__e';
-
     subscription = {};
+
+    /**
+     * description      On connected callback handler. Subscribes to the ReadEvent__e channel
+     *                  This allows to refresh LWC on RBR insert, update, delete
+     * @author          Egor Apaniuk
+     * @since           22/02/2024
+     */
     async connectedCallback () {
         this.subscription = await subscribe(this.channelName, -1, response => {
             return refreshApex(this.wiredReaderSummaryResult);
         })
     }
 
+    /**
+     * description      On disconnected callback handler. Unsubscribes from ReadEvent__e channel.
+     * @author          Egor Apaniuk
+     * @since           22/02/2024
+     */
     disconnectedCallback () {
         unsubscribe(this.subscription)
     }
@@ -48,6 +59,7 @@ export default class ReaderSummary extends LightningElement {
             this.isDataLoaded= true;
             this.data = data;
 
+            this.isButtonDisabled = (data.activeRBRCount > 0) ? false : true;
         }
     }
 
