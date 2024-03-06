@@ -5,6 +5,23 @@
  */
 public with sharing class AccountTriggerHandler {
 
+    public final Integer x;
+    public static final Integer x1;
+    public static final Integer DEFAULT_SERVICE_TIME = 10;
+
+    public Integer serviceTime;
+    public String country;
+
+    public AccountTriggerHandler(String country) {
+        this.serviceTime = DEFAULT_SERVICE_TIME;
+        this.country = country;
+    }
+
+    public AccountTriggerHandler(Integer sTime, String country) {
+        this.serviceTime = sTime;
+        this.country = country;
+    }
+
     public static final String CONTACT_LAST_NAME = 'Something ';
     private List<Account> newRecords;
     private Map<Id, Account> newMap;
