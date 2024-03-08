@@ -20,22 +20,27 @@ public with sharing class CaseTriggerHandler {
     }
 
     public void afterInsert() {
-        for (Case newCase : newRecords) {
-            System.debug('newCase.Tier__c ' + newCase.Tier__c);
+        handleService();
+    }
 
+    private void handleService() {
+        for (Case newCase : newRecords) {
             if (newCase.Tier__c == CASE_TIER_LOW) {
-                handleService(new LowPriorityService());
+
+                new ServiceHandler().createTaskFromHandler(new LowPriorityService());
+
             } else if (newCase.Tier__c == CASE_TIER_DEFAULT) {
-                handleService(new Service());
+
+                new ServiceHandler().createTaskFromHandler(new Service());
+                new EmailServiceSupport().sendEmail();
+
             } else if (newCase.Tier__c == CASE_TIER_GOLD) {
-                handleService(new GoldService());
-            } else {
+
+                new ServiceHandler().createTaskFromHandler(new GoldService());
+                new EmailServiceSupport().sendEmail();
             }
         }
     }
-
-
-    private void handleService(Service service) {
-        new ServiceHandler().createTaskFromHandler(service);
-    }
 }
+//* AccountTriggerHandler > SercviceHandler > service > goldService
+//* EmailService

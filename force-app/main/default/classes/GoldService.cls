@@ -1,5 +1,8 @@
 public with sharing class GoldService extends Service {
 
+    // TODO в чем отличие статик блока от конструктора. Когда мы используем статик блок.
+    // TODO Почему не инициализировать переменные через конструктор?
+
     static {
         System.debug('sending email to support user from static block');
     }
