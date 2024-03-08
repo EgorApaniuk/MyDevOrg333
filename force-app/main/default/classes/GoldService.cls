@@ -1,5 +1,9 @@
 public with sharing class GoldService extends Service {
 
+    static {
+        System.debug('sending email to support user from static block');
+    }
+
     public override void createTask() {
         Task task = new Task();
         task.ActivityDate = date.today().addDays(1);
