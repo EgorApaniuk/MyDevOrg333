@@ -1,0 +1,19 @@
+<template>
+    <div if:true={isDataLoaded} class="slds-card slds-grid slds-grid_vertical">
+
+        <div class="slds-card__body slds-grid slds-wrap slds-grow">
+            <div class="slds-col slds-size_1-of-2 slds-p-left_medium">
+                <div class="slds-text-heading_small">Active Talon Count:</div>
+                <div class="slds-text-heading_medium">{data.activeRBRCount}</div>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-text-heading_small">Total Talon Count:</div>
+                <div class="slds-text-heading_medium">{data.totalRBRCount}</div>
+            </div>
+        </div>
+
+        <footer class="slds-card__footer">
+            <lightning-button variant="brand" label="Complete Active Talons" onclick={handleCompleteActiveBRBs} disabled={isCompleteButtonDisabled}></lightning-button>
+        </footer>
+    </div>
+</template>

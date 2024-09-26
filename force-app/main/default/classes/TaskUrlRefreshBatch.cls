@@ -1,4 +1,4 @@
-public with sharing class BatchTaskUrlRefresh implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts {
+public with sharing class TaskUrlRefreshBatch implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts {
 
     private static final String API_URL = 'https://pokeapi.co/api/v2/pokemon/';
 
@@ -7,12 +7,12 @@ public with sharing class BatchTaskUrlRefresh implements Database.Batchable<SObj
     //! можно инициализиаровать в начале и пользоваться Statefull значениями
     //! String apiResponse = fetchDataFromApi(API_URL);
 
-    public BatchTaskUrlRefresh() {
+    public TaskUrlRefreshBatch() {
 
     }
 
-    public BatchTaskUrlRefresh(String anyVariable) {
-        this.anyVariable = anyVariable;
+    public TaskUrlRefreshBatch(String anyVariable) {
+        // this.anyVariable = anyVariable;
     }
 
     public Database.QueryLocator start(Database.BatchableContext BC) {

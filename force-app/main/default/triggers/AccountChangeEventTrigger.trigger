@@ -1,3 +1,8 @@
+/**
+ * description  Account Change Event trigger
+ * @author      Egor Apaniuk
+ * @since       26/01/2024
+ */
 trigger AccountChangeEventTrigger on AccountChangeEvent (after insert) {
     for (AccountChangeEvent accountChangeEvent : Trigger.new) {
         System.debug('full event debug');
